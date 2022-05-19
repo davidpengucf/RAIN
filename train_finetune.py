@@ -12,9 +12,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms
-#import network, loss
 from torch.utils.data import DataLoader
-#from data_list import ImageList, ImageList_idx
 import random, pdb, math, copy
 from tqdm import tqdm
 from scipy.spatial.distance import cdist
