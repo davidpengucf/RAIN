@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
 
 
 import argparse
@@ -22,9 +21,6 @@ from scipy.spatial.distance import cdist
 from sklearn.metrics import confusion_matrix
 
 
-# # Parameter
-
-# In[2]:
 
 
 parser = argparse.ArgumentParser(description='SHOT')
@@ -74,7 +70,6 @@ if args.dset == 'office-caltech':
     args.class_num = 10
 
 
-# In[3]:
 
 
 #os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_id
@@ -85,7 +80,7 @@ np.random.seed(SEED)
 random.seed(SEED)
 
 
-# In[4]:
+
 
 
 def print_args(args):
@@ -95,16 +90,13 @@ def print_args(args):
     return s
 
 
-# In[5]:
+
 
 
 print('Called with args:')
 print(args)
 
 
-# # Data
-
-# In[6]:
 
 
 import torch
@@ -118,7 +110,7 @@ import cv2
 import torchvision
 
 
-# In[7]:
+
 
 
 def make_dataset(image_list, labels):
@@ -133,8 +125,6 @@ def make_dataset(image_list, labels):
     return images
 
 
-# In[8]:
-
 
 def rgb_loader(path):
     with open(path, 'rb') as f:
@@ -146,8 +136,6 @@ def l_loader(path):
         with Image.open(f) as img:
             return img.convert('L')
 
-
-# In[9]:
 
 
 class ImageList(Dataset):
@@ -179,8 +167,6 @@ class ImageList(Dataset):
         return len(self.imgs)
 
 
-# In[10]:
-
 
 class ImageList_idx(Dataset):
     def __init__(self, image_list, labels=None, transform=None, target_transform=None, mode='RGB'):
@@ -210,8 +196,6 @@ class ImageList_idx(Dataset):
     def __len__(self):
         return len(self.imgs)
 
-
-# In[11]:
 
 
 def data_load(args): 
@@ -249,7 +233,6 @@ def data_load(args):
     return dset_loaders
 
 
-# In[12]:
 
 
 def image_train(resize_size=256, crop_size=224):
@@ -263,7 +246,6 @@ def image_train(resize_size=256, crop_size=224):
     ])
 
 
-# In[13]:
 
 
 def image_test(resize_size=256, crop_size=224, alexnet=False):
@@ -281,9 +263,6 @@ def image_test(resize_size=256, crop_size=224, alexnet=False):
     ])
 
 
-# # Network
-
-# In[14]:
 
 
 import numpy as np
@@ -297,7 +276,6 @@ import torch.nn.utils.weight_norm as weightNorm
 from collections import OrderedDict
 
 
-# In[15]:
 
 
 def calc_coeff(iter_num, high=1.0, low=0.0, alpha=10.0, max_iter=10000.0):
@@ -316,14 +294,12 @@ def init_weights(m):
         nn.init.zeros_(m.bias)
 
 
-# In[16]:
-
 
 res_dict = {"resnet18":models.resnet18, "resnet34":models.resnet34, "resnet50":models.resnet50, 
 "resnet101":models.resnet101, "resnet152":models.resnet152, "resnext50":models.resnext50_32x4d, "resnext101":models.resnext101_32x8d}
 
 
-# In[17]:
+
 
 
 class ResBase(nn.Module):
@@ -355,7 +331,6 @@ class ResBase(nn.Module):
         return x
 
 
-# In[18]:
 
 
 class feat_bootleneck(nn.Module):
@@ -375,7 +350,6 @@ class feat_bootleneck(nn.Module):
         return x
 
 
-# In[19]:
 
 
 class feat_classifier(nn.Module):
@@ -394,12 +368,6 @@ class feat_classifier(nn.Module):
         return x
 
 
-# # Rotation
-# 
-# 
-
-# In[20]:
-
 
 import torch
 import torch.utils.data
@@ -407,7 +375,6 @@ from torchvision import datasets
 import numpy as np
 
 
-# In[21]:
 
 
 def tensor_rot_90(x):
@@ -420,7 +387,6 @@ def tensor_rot_270(x):
     return x.transpose(1, 2).flip(2)
 
 
-# In[22]:
 
 
 def rotate_single_with_label(img, label):
@@ -434,7 +400,6 @@ def rotate_single_with_label(img, label):
     return img
 
 
-# In[23]:
 
 
 def rotate_batch_with_labels(batch, labels):
@@ -446,7 +411,6 @@ def rotate_batch_with_labels(batch, labels):
     return torch.cat(images)
 
 
-# In[24]:
 
 
 def cal_acc_rot(loader, netF, netB, netR):
@@ -477,8 +441,6 @@ def cal_acc_rot(loader, netF, netB, netR):
     
     return accuracy*100
 
-
-# In[25]:
 
 
 def train_target_rot(args):
@@ -566,41 +528,6 @@ def train_target_rot(args):
     return best_netR, rot_acc
 
 
-# In[26]:
-
-
-#t0 = torch.arange(48).reshape(3,-1,4)
-#t0
-
-
-# In[27]:
-
-
-#t0.flip(2) # inverse on dim 2
-
-
-# In[28]:
-
-
-#t0.flip(2).transpose(1, 2) # unclockwise
-
-
-# In[29]:
-
-
-#t0.flip(2).flip(1)
-
-
-# In[30]:
-
-
-#t0.transpose(1, 2).flip(2)
-
-
-# # Loss
-
-# In[31]:
-
 
 def obtain_label(loader, netF, netB, netC, args):
     start_test = True
@@ -669,8 +596,6 @@ def obtain_label(loader, netF, netB, netC, args):
     return pred_label.astype('int'), ent_sel
 
 
-# In[32]:
-
 
 def Entropy(input_):
     bs = input_.size(0)
@@ -679,8 +604,6 @@ def Entropy(input_):
     entropy = torch.sum(entropy, dim=1)
     return entropy 
 
-
-# In[33]:
 
 
 def op_copy(optimizer):
@@ -698,34 +621,6 @@ def lr_scheduler(optimizer, iter_num, max_iter, gamma=10, power=0.75):
     return optimizer
 
 
-# In[34]:
-
-
-a = torch.rand(size=(3,6))
-a
-
-
-# In[36]:
-
-
-ent = torch.sum(-a * torch.log(a + args.epsilon), dim=1)
-ent
-
-
-# In[38]:
-
-
-divide = ent < ent.mean()
-divide
-
-
-# In[39]:
-
-
-a[divide]
-
-
-# In[42]:
 
 
 args.t = 1
@@ -758,35 +653,6 @@ args.out_file = open(osp.join(args.output_dir, 'log_' + args.savename + '.txt'),
 args.out_file.write(print_args(args)+'\n')
 args.out_file.flush()
 
-
-# In[43]:
-
-
-dset_loaders = data_load(args)
-
-
-# In[44]:
-
-
-iter_test = iter(dset_loaders["target"])
-inputs_test, _, tar_idx = iter_test.next()
-
-
-# In[47]:
-
-
-tar_idx
-
-
-# In[48]:
-
-
-#tar_idx[divide]
-
-
-# # Train
-
-# In[ ]:
 
 
 def cal_acc(loader, netF, netB, netC, flag=False):
@@ -822,8 +688,6 @@ def cal_acc(loader, netF, netB, netC, flag=False):
     else:
         return accuracy*100, mean_ent
 
-
-# In[ ]:
 
 
 def train_target(args):
@@ -972,10 +836,6 @@ def train_target(args):
     return netF, netB, netC
 
 
-# # Execution
-
-# In[41]:
-
 
 if args.dset == 'office-home':
     names = ['Art', 'Clipart', 'Product', 'Real_World']
@@ -990,46 +850,6 @@ if args.dset == 'office-caltech':
     names = ['amazon', 'caltech', 'dslr', 'webcam']
     args.class_num = 10
 
-
-# In[ ]:
-
-
-'''for i in range(len(names)):
-    if i == args.s:
-        continue
-    args.t = i
-
-    folder = './data/'
-    args.s_dset_path = folder + args.dset + '/' + names[args.s] + '_list.txt'
-    args.t_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-    args.test_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-
-    if args.dset == 'office-home':
-        if args.da == 'pda':
-            args.class_num = 65
-            args.src_classes = [i for i in range(65)]
-            args.tar_classes = [i for i in range(25)]
-
-    args.output_dir_src = osp.join(args.output_src, args.da, args.dset, names[args.s][0].upper())
-    args.output_dir = osp.join(args.output, args.da, args.dset, names[args.s][0].upper()+names[args.t][0].upper())
-    args.name = names[args.s][0].upper()+names[args.t][0].upper()
-
-    if not osp.exists(args.output_dir):
-        os.system('mkdir -p ' + args.output_dir)
-    if not osp.exists(args.output_dir):
-        os.mkdir(args.output_dir)
-
-    args.savename = 'par_' + str(args.cls_par)
-    if args.da == 'pda':
-        args.gent = ''
-        args.savename = 'par_' + str(args.cls_par) + '_thr' + str(args.threshold)
-    args.out_file = open(osp.join(args.output_dir, 'log_' + args.savename + '.txt'), 'w')
-    args.out_file.write(print_args(args)+'\n')
-    args.out_file.flush()
-    train_target(args)'''
-
-
-# In[ ]:
 
 
 args.t = 1
@@ -1063,43 +883,6 @@ args.out_file.write(print_args(args)+'\n')
 args.out_file.flush()
 train_target(args)
 
-
-# In[ ]:
-
-
-args.t = 2
-
-folder = './data/'
-args.s_dset_path = folder + args.dset + '/' + names[args.s] + '_list.txt'
-args.t_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-args.test_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-
-if args.dset == 'office-home':
-    if args.da == 'pda':
-        args.class_num = 65
-        args.src_classes = [i for i in range(65)]
-        args.tar_classes = [i for i in range(25)]
-
-args.output_dir_src = osp.join(args.output_src, args.da, args.dset, names[args.s][0].upper())
-args.output_dir = osp.join(args.output, args.da, args.dset, names[args.s][0].upper()+names[args.t][0].upper())
-args.name = names[args.s][0].upper()+names[args.t][0].upper()
-
-if not osp.exists(args.output_dir):
-    os.system('mkdir -p ' + args.output_dir)
-if not osp.exists(args.output_dir):
-    os.mkdir(args.output_dir)
-
-args.savename = 'par_' + str(args.cls_par)
-if args.da == 'pda':
-    args.gent = ''
-    args.savename = 'par_' + str(args.cls_par) + '_thr' + str(args.threshold)
-args.out_file = open(osp.join(args.output_dir, 'log_' + args.savename + '.txt'), 'w')
-args.out_file.write(print_args(args)+'\n')
-args.out_file.flush()
-train_target(args)
-
-
-# In[ ]:
 
 
 
