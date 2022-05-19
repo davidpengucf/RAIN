@@ -1,3 +1,11 @@
+import numpy as np
+import torch
+import torch.nn as nn
+from torch.autograd import Variable
+import math
+import torch.nn.functional as F
+
+
 def divide_spectrum(trg_img):
 
     fft_trg_np = torch.fft.fft2( trg_img, dim=(-3, -2) )
