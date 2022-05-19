@@ -621,38 +621,6 @@ def lr_scheduler(optimizer, iter_num, max_iter, gamma=10, power=0.75):
 
 
 
-args.t = 1
-
-folder = './data/'
-args.s_dset_path = folder + args.dset + '/' + names[args.s] + '_list.txt'
-args.t_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-args.test_dset_path = folder + args.dset + '/' + names[args.t] + '_list.txt'
-
-if args.dset == 'office-home':
-    if args.da == 'pda':
-        args.class_num = 65
-        args.src_classes = [i for i in range(65)]
-        args.tar_classes = [i for i in range(25)]
-
-args.output_dir_src = osp.join(args.output_src, args.da, args.dset, names[args.s][0].upper())
-args.output_dir = osp.join(args.output, args.da, args.dset, names[args.s][0].upper()+names[args.t][0].upper())
-args.name = names[args.s][0].upper()+names[args.t][0].upper()
-
-if not osp.exists(args.output_dir):
-    os.system('mkdir -p ' + args.output_dir)
-if not osp.exists(args.output_dir):
-    os.mkdir(args.output_dir)
-
-args.savename = 'par_' + str(args.cls_par)
-if args.da == 'pda':
-    args.gent = ''
-    args.savename = 'par_' + str(args.cls_par) + '_thr' + str(args.threshold)
-args.out_file = open(osp.join(args.output_dir, 'log_' + args.savename + '.txt'), 'w')
-args.out_file.write(print_args(args)+'\n')
-args.out_file.flush()
-
-
-
 def cal_acc(loader, netF, netB, netC, flag=False):
     start_test = True
     with torch.no_grad():
