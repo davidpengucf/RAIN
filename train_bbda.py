@@ -525,14 +525,13 @@ if __name__ == "__main__":
       args.class_num = 10
 
 
-  # In[3]:
 
 
   args.width_mult_range = [0.9, 1.0]
   args.width_mult_list = [0.9, 1.0]
 
 
-  # In[4]:
+
 
 
   #os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_id
@@ -543,7 +542,6 @@ if __name__ == "__main__":
   random.seed(SEED)
 
 
-  # In[5]:
 
 
   def print_args(args):
@@ -552,8 +550,6 @@ if __name__ == "__main__":
           s += "{}:{}\n".format(arg, content)
       return s
 
-
-  # In[6]:
 
 
   print('Called with args:')
