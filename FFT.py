@@ -35,8 +35,6 @@ def amp_spectrum_swap( amp_local, amp_target, L=1, ratio=0.5):
     return a_local
 
 
-# In[55]:
-
 
 def pha_spectrum_swap(pha_local, pha_target, L=1, ratio=0.5):
     
@@ -57,8 +55,6 @@ def pha_spectrum_swap(pha_local, pha_target, L=1, ratio=0.5):
     a_local = torch.fft.ifftshift( a_local, dim=(-3, -2) ) #shift zero back to the original space
     return a_local
 
-
-# In[56]:
 
 
 def freq_space_interpolation( local_img, amp_target, L=0 , ratio=0):
