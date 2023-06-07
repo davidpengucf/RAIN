@@ -277,6 +277,7 @@ def train_target(args):
 
     netB = feat_bootleneck(type=args.classifier, feature_dim=netF.in_features, bottleneck_dim=args.bottleneck)#.cuda()
     netC = feat_classifier(type=args.layer, class_num = args.class_num, bottleneck_dim=args.bottleneck)#.cuda()
+    netC2 = feat_classifier(type=args.layer, class_num = args.class_num, bottleneck_dim=args.bottleneck)
     netBs = feat_bootleneck(type=args.classifier, feature_dim=netF.in_features, bottleneck_dim=args.bottleneck)#.cuda()
     netCs = feat_classifier(type=args.layer, class_num = args.class_num, bottleneck_dim=args.bottleneck)#.cuda()
 
@@ -447,12 +448,30 @@ def train_target(args):
         for width_mult in sorted(width_mult_list, reverse=True):
             netF.apply(
                 lambda m: setattr(m, 'width_mult', width_mult))
-            output = netC(netB(netF(inputs_test_list[random.randint(0, 3)])))
+            netC2.load_state_dict(copy.deepcopy(netC.state_dict()))
+            output = netC2(netB(netF(inputs_test_list[random.randint(0, 3)])))
             output_detach = output.detach()
             kd_loss = 0.6 * torch.nn.KLDivLoss(reduction='batchmean')(F.log_softmax(output, dim=1), F.softmax(max_output_detach, dim=1)) 
             kd_loss = 0.6 * torch.nn.KLDivLoss(reduction='batchmean')(F.softmax(max_output, dim=1), F.log_softmax(output_detach, dim=1)) 
             kd_loss /= 2
             kd_loss.backward()
+            
+            for n, p in netC.named_parameters():
+                full_grad = grad([kd_loss],
+                            [p],
+                            create_graph=True,
+                            only_inputs=True,
+                            allow_unused=False)[0]
+             for n, p in netC2.named_parameters():
+                sub_grad = grad([kd_loss],
+                            [p],
+                            create_graph=True,
+                            only_inputs=True,
+                            allow_unused=False)[0] 
+             
+             wg_loss = F.cosine_similarity(full_grad, sub_grad, dim=1).mean()
+             wg_loss *= 1+torch.exp(-Entropy(output))
+             wg_loss *= 0.3
 
         optimizer.step()
 
