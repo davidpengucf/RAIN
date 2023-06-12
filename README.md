@@ -17,6 +17,11 @@ Execute train_rain.py.
 <img src="figs/frame1.png" width="600"/>
 <img src="figs/frame2.png" width="600"/>
 
+### Results:  
+
+<img src="figs/result1.png" width="600"/>
+<img src="figs/result2.png" width="600"/>
+
 ### Citation
 
 If you find this code useful for your research, please cite our paper
