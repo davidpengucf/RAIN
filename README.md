@@ -12,7 +12,7 @@
 ### Training:
 Execute train_rain.py.
 
-### Framework:  
+### Method:  
 
 <img src="figs/shot.jpg" width="600"/>
 
