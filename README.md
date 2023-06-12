@@ -14,7 +14,7 @@ Execute train_rain.py.
 
 ### Citation
 
-If you find this code useful for your research, please cite our papers
+If you find this code useful for your research, please cite our paper
 
 ```
 @inproceedings{Peng2022RAINRO,
