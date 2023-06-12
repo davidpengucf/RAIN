@@ -11,4 +11,18 @@
 
 ### Training:
 Execute train_rain.py.
+
+### Citation
+
+If you find this code useful for your research, please cite our papers
+
+```
+@inproceedings{Peng2022RAINRO,
+  title={RAIN: RegulArization on Input and Network for Black-Box Domain Adaptation},
+  author={Qucheng Peng and Zhengming Ding and L. Lyu and Lichao Sun and Chen Chen},
+  booktitle={International Joint Conference on Artificial Intelligence (IJCAI)}, 
+  year={2023}
+}
+```
+
 	
