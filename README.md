@@ -15,7 +15,7 @@ Execute train_rain.py.
 ### Method:  
 
 <img src="figs/frame1.png" width="1000"/>
-<img src="figs/frame2.png" width="600"/>
+<img src="figs/frame2.png" width="400"/>
 
 ### Results:  
 
