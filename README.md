@@ -12,6 +12,10 @@
 ### Training:
 Execute train_rain.py.
 
+### Framework:  
+
+<img src="figs/shot.jpg" width="600"/>
+
 ### Citation
 
 If you find this code useful for your research, please cite our paper
