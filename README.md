@@ -27,11 +27,13 @@ Execute train_rain.py.
 If you find this code useful for your research, please cite our paper
 
 ```
-@inproceedings{Peng2022RAINRO,
-  title={RAIN: RegulArization on Input and Network for Black-Box Domain Adaptation},
-  author={Qucheng Peng and Zhengming Ding and L. Lyu and Lichao Sun and Chen Chen},
-  booktitle={International Joint Conference on Artificial Intelligence (IJCAI)}, 
-  year={2023}
+@misc{peng2023rain,
+      title={RAIN: RegulArization on Input and Network for Black-Box Domain Adaptation}, 
+      author={Qucheng Peng and Zhengming Ding and Lingjuan Lyu and Lichao Sun and Chen Chen},
+      year={2023},
+      eprint={2208.10531},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
