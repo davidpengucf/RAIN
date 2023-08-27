@@ -1,4 +1,4 @@
-# [**[IJCAI-2023] RAIN: RegulArization on Input and Network for Black-Box Domain Adaptation**](https://arxiv.org/abs/2208.10531)
+# [**[IJCAI-2023] RAIN: RegulArization on Input and Network for Black-Box Domain Adaptation**](https://www.ijcai.org/proceedings/2023/458)
 
 
 
